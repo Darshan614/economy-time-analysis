@@ -1,0 +1,21 @@
+name: Upload Dataflow Pipeline to GCS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP using Manual Token
+        run: |
+          echo "${{ secrets.GCP_ACCESS_TOKEN }}" | gcloud auth application-default login --brief
+
+      - name: Upload Dataflow pipeline to GCS
+        run: |
+          gsutil cp dataflow_pipeline.py gs://code-files-darshan-614-bucket3/
